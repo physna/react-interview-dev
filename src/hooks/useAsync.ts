@@ -1,9 +1,8 @@
-import { Stat } from "pokedex-promise-v2";
 import * as React from "react";
 
 type Action<Data> =
   | { status: "idle"; data: null; error: null }
-  | { status: "pending"; data: null; error: null }
+  | { status: "pending"; data?: Data | null; error: null }
   | { error: unknown; status: "rejected"; data: null }
   | { data: Data; status: "resolved"; error: null };
 
@@ -58,7 +57,7 @@ function useAsync<State>(initialState: Action<State> = defaultInitialState) {
 
   const run = React.useCallback(
     (promise: () => Promise<State>) => {
-      safeSetState({ status: "pending", data: null, error: null });
+      safeSetState({ status: "pending", error: null });
 
       return promise().then(
         (data: State) => {
@@ -93,7 +92,7 @@ function useAsync<State>(initialState: Action<State> = defaultInitialState) {
 function useSafeDispatch<T>(dispatch: React.Dispatch<T>) {
   const mounted = React.useRef(false);
 
-  React.useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     mounted.current = true;
     return () => {
       mounted.current = false;
@@ -105,5 +104,8 @@ function useSafeDispatch<T>(dispatch: React.Dispatch<T>) {
     [dispatch]
   );
 }
+
+const useIsomorphicLayoutEffect =
+  typeof window !== "undefined" ? React.useLayoutEffect : React.useEffect;
 
 export { useAsync };
