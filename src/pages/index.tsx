@@ -1,9 +1,9 @@
 import { useAsync } from "@/hooks/useAsync";
 import { useEffect } from "react";
-import { Pokemon } from "pokedex-promise-v2";
+import { PokemonList } from "./api/pokemon";
 
 export default function Home() {
-  const { run, data } = useAsync<Pokemon[]>();
+  const { run, data } = useAsync<PokemonList>();
 
   useEffect(() => {
     run(async () => {
@@ -17,16 +17,16 @@ export default function Home() {
     <main>
       <section className="grid grid-cols-4 gap-4 p-24">
         {data &&
-          data.map((pokemon) => (
+          data.results.map((pokemon) => (
             <div
               key={pokemon.name}
               className="max-w-sm rounded overflow-hidden shadow-lg"
             >
-              {pokemon.sprites.front_default && (
+              {pokemon.image && (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img
                   className="w-full"
-                  src={pokemon.sprites.front_default}
+                  src={pokemon.image}
                   alt={`Sprite of ${name}`}
                 />
               )}
