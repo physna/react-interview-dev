@@ -27,4 +27,4 @@ The landing page at http://localhost:3000 shows a list of 10 pokemon.
 
 1. Add the ability to see the next 10 pokemon on the landing page.
 1. Add the ability to see more than 10 pokemon on the landing page.
-1. Add the ability to sort the pokemon on the landing page.
+1. Add the ability to cache the pokemon in memory in the api.
